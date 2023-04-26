@@ -1,8 +1,6 @@
 import express from "express";
-import { mapOrder } from "./utilities/index";
 import { env } from "./config/env";
 import { connectDB } from "./config/mongodb";
-import { BoardModel } from "./models/board.model";
 
 const hostName: string = env.HOST_NAME;
 const port: number = parseInt(env.PORT, 10);
