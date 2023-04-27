@@ -23,8 +23,7 @@ const createNewBoard = async (data: any) => {
     const insertedDocument = await getDBInstance().collection(boardCollectionName).findOne(result.insertedId);
     return insertedDocument;
   } catch(error) {
-    console.log(error);
-    return null;
+    throw new Error(error);
   }
 }
 
