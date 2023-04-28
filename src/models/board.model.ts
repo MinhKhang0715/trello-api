@@ -5,7 +5,7 @@ import { getDBInstance } from "../config/mongodb";
 
 const boardCollectionName = 'boards';
 const boardCollectionSchema = Joi.object({
-  title: Joi.string().required().min(3).max(20), // title cannot be null and its length is between 3 and 20 characters
+  title: Joi.string().required().min(3).max(20).trim(), // title cannot be null and its length is between 3 and 20 characters
   columnOrder: Joi.array().items(Joi.string()).default([]), // is an array of strings, default value is an empty array
   createdAt: Joi.date().timestamp().default(Date.now()),
   updatedAt: Joi.date().timestamp().default(null),
