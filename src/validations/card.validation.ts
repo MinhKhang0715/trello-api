@@ -3,9 +3,11 @@ import { Request, Response, NextFunction } from "express";
 import { HttpStatusCode } from "../utilities/constants";
 
 
-const createNewBoard = async (req: Request, res: Response, next: NextFunction) => {
+const createNewCard = async (req: Request, res: Response, next: NextFunction) => {
 	const condition = Joi.object({
-		title: Joi.string().required().min(3).max(20).trim(), // title cannot be null and its length is between 3 and 20 characters
+    boardId: Joi.string().required(),
+    columnId: Joi.string().required(),
+		title: Joi.string().required().min(3).max(50).trim(), // title cannot be null and its length is between 3 and 20 characters
 	});
 
 	try {
@@ -18,4 +20,4 @@ const createNewBoard = async (req: Request, res: Response, next: NextFunction) =
 	}
 };
 
-export const BoardValidation = { createNewBoard }
+export const CardValidation = { createNewCard }
