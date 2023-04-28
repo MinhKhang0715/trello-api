@@ -1,5 +1,6 @@
 import Joi from "joi";
 import { getDBInstance } from "../config/mongodb";
+import { ObjectId } from "mongodb";
 
 // Card collection structure
 
@@ -20,8 +21,13 @@ const validateSchema = async (data: any) => {
 
 const createNewCard = async (data: any) => {
   try {
-    const value = await validateSchema(data);
-    const result = await getDBInstance().collection(cardCollectionName).insertOne(value);
+    const validatedData = await validateSchema(data);
+    const dataToInsert = {
+      ...validatedData,
+      boardId: new ObjectId(validatedData.boardId),
+      columnId: new ObjectId(validatedData.columnId)
+    }
+    const result = await getDBInstance().collection(cardCollectionName).insertOne(dataToInsert);
     const insertedDocument = await getDBInstance().collection(cardCollectionName).findOne(result.insertedId);
     return insertedDocument;
   } catch(error) {
@@ -29,4 +35,4 @@ const createNewCard = async (data: any) => {
   }
 }
 
-export const CardModel = { createNewCard }
+export const CardModel = { createNewCard, cardCollectionName }

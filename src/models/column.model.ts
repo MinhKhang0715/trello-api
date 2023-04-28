@@ -1,6 +1,6 @@
 import Joi from "joi";
 import { getDBInstance } from "../config/mongodb";
-import { ObjectId } from "mongodb";
+import { ObjectId, PushOperator } from "mongodb";
 
 // Column collection structure
 
@@ -20,8 +20,12 @@ const validateSchema = async (data: any) => {
 
 const createNewColumn = async (data: any) => {
   try {
-    const value = await validateSchema(data);
-    const result = await getDBInstance().collection(columnCollectionName).insertOne(value);
+    const validatedData = await validateSchema(data);
+    const dataToInsert = {
+      ...validatedData,
+      boardId: new ObjectId(validatedData.boardId)
+    }
+    const result = await getDBInstance().collection(columnCollectionName).insertOne(dataToInsert);
     const insertedDocument = await getDBInstance().collection(columnCollectionName).findOne(result.insertedId);
     return insertedDocument;
   } catch(error) {
@@ -42,4 +46,23 @@ const updateColumn = async (id: string, data: any) => {
   }
 }
 
-export const ColumnModel = { createNewColumn, updateColumn }
+/**
+ * Push into the cardOrder field when a new card is created
+ * 
+ * @param {string} columnId
+ * @param {string} cardId
+ */
+const pushCardOrder = async (columnId: string, cardId: string) => {
+  try {
+    const result = await getDBInstance().collection(columnCollectionName).findOneAndUpdate(
+      { _id: new ObjectId(columnId) },
+      { $push: { cardOrder: cardId } } as PushOperator<Document>,
+      { returnDocument: "after" }
+    );
+    return result;
+  } catch(error) {
+    throw new Error(error);
+  }
+}
+
+export const ColumnModel = { createNewColumn, updateColumn, pushCardOrder, columnCollectionName }
