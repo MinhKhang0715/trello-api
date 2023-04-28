@@ -2,6 +2,8 @@ import express from "express";
 import { env } from "./config/env";
 import { connectDB } from "./config/mongodb";
 import { api } from "./routes/v1";
+import cors from 'cors';
+import { corsOptions } from "./config/cors";
 
 const hostName: string = env.HOST_NAME;
 const port: number = parseInt(env.PORT, 10);
@@ -16,8 +18,9 @@ connectDB()
 
 const startServer = () => {
   const app = express();
+  
+  app.use(cors(corsOptions));
   app.use(express.json());
-
   app.use('/v1', api);
 
   app.listen(port, hostName, () => {
