@@ -30,7 +30,7 @@ const createNewCard = async (data: any) => {
     const result = await getDBInstance().collection(cardCollectionName).insertOne(dataToInsert);
     const insertedDocument = await getDBInstance().collection(cardCollectionName).findOne(result.insertedId);
     return insertedDocument;
-  } catch(error) {
+  } catch (error) {
     throw new Error(error);
   }
 }

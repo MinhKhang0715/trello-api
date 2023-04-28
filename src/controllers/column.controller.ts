@@ -15,8 +15,8 @@ const createNewColumn = async (req: Request, res: Response) => {
 
 const updateColumn = async (req: Request, res: Response) => {
 	try {
-    const { id } = req.params;
-    console.log(id);
+		const { id } = req.params;
+		console.log(id);
 		const result = await ColumnService.updateColumn(id, req.body);
 		res.status(HttpStatusCode.OK).json(result);
 	} catch (error) {

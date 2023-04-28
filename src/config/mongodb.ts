@@ -16,11 +16,3 @@ export const getDBInstance = () => {
   if (!dbInstance) throw new Error("Must connect to database server first");
   return dbInstance;
 }
-
-// const listDBs = async (client: MongoClient) => {
-//   const databaseList = await client.db().admin().listDatabases();
-//   console.log(databaseList);
-//   databaseList.databases.forEach(db => {
-//     console.log(`-${db.name}`) 
-//   });
-// };

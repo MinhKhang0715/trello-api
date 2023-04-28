@@ -15,12 +15,12 @@ const getBoard = async (id: string) => {
     const board = await BoardModel.getBoard(id);
 
     // Add each card to its corrected column based on cardId
-    board && 
+    board &&
       board.columns.forEach(col => {
         col.cards = board.cards?.filter(c => c.columnId.toString() === col._id.toString());
       });
     delete board.cards;
-    
+
     return board;
   } catch (error) {
     throw new Error(error);

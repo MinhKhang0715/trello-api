@@ -26,7 +26,7 @@ const createNewBoard = async (data: any) => {
     const result = await getDBInstance().collection(boardCollectionName).insertOne(value);
     const insertedDocument = await getDBInstance().collection(boardCollectionName).findOne(result.insertedId);
     return insertedDocument;
-  } catch(error) {
+  } catch (error) {
     throw new Error(error);
   }
 }
@@ -40,23 +40,25 @@ const getBoard = async (id: string) => {
   try {
     const result = await getDBInstance().collection(boardCollectionName).aggregate([
       { $match: { _id: new ObjectId(id) } },
-      { $lookup: {
+      {
+        $lookup: {
           from: ColumnModel.columnCollectionName,
           localField: '_id',        // column's id
           foreignField: 'boardId',  // boardId field in collumn collection
           as: 'columns'             // array of collums
         }
       },
-      { $lookup: {
+      {
+        $lookup: {
           from: CardModel.cardCollectionName,
-          localField:  '_id',       // card's id
+          localField: '_id',       // card's id
           foreignField: 'boardId',  // boardId field in card collection
           as: 'cards'               // array of cards
         }
       }
     ]).toArray();
     return result[0] as Board || {};
-  } catch(error) {
+  } catch (error) {
     throw new Error(error);
   }
 }
@@ -75,7 +77,7 @@ const pushColumnOrder = async (boardId: string, columnId: string) => {
       { returnDocument: "after" }
     );
     return result;
-  } catch(error) {
+  } catch (error) {
     throw new Error(error);
   }
 }

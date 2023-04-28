@@ -28,7 +28,7 @@ const createNewColumn = async (data: any) => {
     const result = await getDBInstance().collection(columnCollectionName).insertOne(dataToInsert);
     const insertedDocument = await getDBInstance().collection(columnCollectionName).findOne(result.insertedId);
     return insertedDocument;
-  } catch(error) {
+  } catch (error) {
     throw new Error(error);
   }
 }
@@ -41,7 +41,7 @@ const updateColumn = async (id: string, data: any) => {
       { returnDocument: "after" }
     );
     return result.value;
-  } catch(error) {
+  } catch (error) {
     throw new Error(error);
   }
 }
@@ -60,7 +60,7 @@ const pushCardOrder = async (columnId: string, cardId: string) => {
       { returnDocument: "after" }
     );
     return result;
-  } catch(error) {
+  } catch (error) {
     throw new Error(error);
   }
 }

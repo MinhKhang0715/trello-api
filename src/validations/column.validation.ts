@@ -25,7 +25,7 @@ const updateColumn = async (req: Request, res: Response, next: NextFunction) => 
 	});
 
 	try {
-		await condition.validateAsync(req.body, { 
+		await condition.validateAsync(req.body, {
 			abortEarly: false,
 			allowUnknown: true
 		});
