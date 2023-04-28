@@ -13,12 +13,13 @@ const createNewBoard = async (data: any) => {
 const getBoard = async (id: string) => {
   try {
     const board = await BoardModel.getBoard(id);
+    if (!board || !board.columns)
+      throw new Error('Board not found')
 
     // Add each card to its corrected column based on cardId
-    board &&
-      board.columns.forEach(col => {
-        col.cards = board.cards?.filter(c => c.columnId.toString() === col._id.toString());
-      });
+    board.columns.forEach(col => {
+      col.cards = board.cards?.filter(c => c.columnId.toString() === col._id.toString());
+    });
     delete board.cards;
 
     return board;
