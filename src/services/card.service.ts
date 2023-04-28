@@ -1,9 +1,14 @@
 import { CardModel } from "../models/card.model";
+import { ColumnModel } from "../models/column.model";
 
 const createNewCard = async (data: any) => {
   try {
-    const result = await CardModel.createNewCard(data);
-    return result;
+    const newCard = await CardModel.createNewCard(data);
+
+    newCard &&
+      await ColumnModel.pushCardOrder(newCard.columnId.toString(), newCard._id.toString());
+
+    return newCard;
   } catch (error) {
     throw new Error(error);
   }

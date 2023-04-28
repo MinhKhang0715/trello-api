@@ -1,3 +1,4 @@
+import { columnRoutes } from "src/routes/v1/column.route";
 import { BoardModel } from "../models/board.model";
 
 const createNewBoard = async (data: any) => {
@@ -9,4 +10,21 @@ const createNewBoard = async (data: any) => {
   }
 };
 
-export const BoardService = { createNewBoard };
+const getBoard = async (id: string) => {
+  try {
+    const board = await BoardModel.getBoard(id);
+
+    // Add each card to its corrected column based on cardId
+    board && 
+      board.columns.forEach(col => {
+        col.cards = board.cards?.filter(c => c.columnId.toString() === col._id.toString());
+      });
+    delete board.cards;
+    
+    return board;
+  } catch (error) {
+    throw new Error(error);
+  }
+};
+
+export const BoardService = { createNewBoard, getBoard };
