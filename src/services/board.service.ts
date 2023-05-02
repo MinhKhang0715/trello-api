@@ -1,5 +1,5 @@
-import { columnRoutes } from "src/routes/v1/column.route";
 import { BoardModel } from "../models/board.model";
+import { Board } from "src/config/interfaces";
 
 const createNewBoard = async (data: any) => {
   try {
@@ -16,13 +16,16 @@ const getBoard = async (id: string) => {
     if (!board || !board.columns)
       throw new Error('Board not found')
 
-    // Add each card to its corrected column based on cardId
-    board.columns.forEach(col => {
-      col.cards = board.cards?.filter(c => c.columnId.toString() === col._id.toString());
-    });
-    delete board.cards;
+    const clonedBoard = JSON.parse(JSON.stringify(board)) as Board;
+    clonedBoard.columns = clonedBoard.columns.filter(col => !col._destroy);
 
-    return board;
+    // Add each card to its corrected column based on cardId    
+    clonedBoard.columns.forEach(col => 
+      col.cards = clonedBoard.cards?.filter(c => c.columnId.toString() === col._id.toString())
+    );
+    delete clonedBoard.cards;
+
+    return clonedBoard;
   } catch (error) {
     throw new Error(error);
   }
