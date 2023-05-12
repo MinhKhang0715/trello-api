@@ -5,6 +5,7 @@ Back-end nodejs for the trello-clone project
 - **Web framework**: [express](https://www.npmjs.com/package/express)
 - **Database**: [MongoDB](https://www.mongodb.com/)
 - **Database connector**: [MongoDB Nodejs Driver](https://www.npmjs.com/package/mongodb)
+- **Validate data using** [Joi](https://www.npmjs.com/package/joi)
 
 ## **Schemas structure**
 ![Schemas](./pics/design_schemas.jpg)

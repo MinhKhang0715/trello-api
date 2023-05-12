@@ -35,6 +35,22 @@ const createNewCard = async (data: any) => {
   }
 }
 
+const updateCard = async (id: string, data: any) => {
+  try {
+    const dataToUpdate = { ...data };
+    if (data.boardId) dataToUpdate.boardId = new ObjectId(data.boardId);
+    if (data.columnId) dataToUpdate.columnId = new ObjectId(data.columnId);
+
+    const result = await getDBInstance().collection(cardCollectionName).findOneAndUpdate(
+      { _id: new ObjectId(id) },
+      { $set: dataToUpdate },
+      { returnDocument: "after" }
+    );
+    return result.value;
+  } catch (error) {
+    throw new Error(error);
+  }
+}
 
 const deleteMany = async (ids: string[]) => {
   try {
@@ -49,4 +65,4 @@ const deleteMany = async (ids: string[]) => {
   }
 }
 
-export const CardModel = { createNewCard, cardCollectionName, deleteMany }
+export const CardModel = { createNewCard, cardCollectionName, deleteMany, updateCard };

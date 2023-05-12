@@ -35,10 +35,9 @@ const createNewColumn = async (data: any) => {
 
 const updateColumn = async (id: string, data: any) => {
   try {
-    const dataToUpdate = {
-      ...data,
-      boardId: new ObjectId(data.boardId)
-    }
+    const dataToUpdate = { ...data };
+    if (data.boardId) dataToUpdate.boardId = new ObjectId(data.boardId);
+    
     const result = await getDBInstance().collection(columnCollectionName).findOneAndUpdate(
       { _id: new ObjectId(id) },
       { $set: dataToUpdate },
