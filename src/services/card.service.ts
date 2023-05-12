@@ -14,4 +14,18 @@ const createNewCard = async (data: any) => {
   }
 };
 
-export const CardService = { createNewCard };
+const updateCard = async (id: string, data: any) => {
+  try {
+    const updatedData = {
+      ...data,
+      updatedAt: Date.now()
+    };
+    if (updatedData._id) delete updatedData._id;
+    const result = await CardModel.updateCard(id, updatedData);
+    return result;
+  } catch (error) {
+    throw new Error(error);
+  }
+};
+
+export const CardService = { createNewCard, updateCard };

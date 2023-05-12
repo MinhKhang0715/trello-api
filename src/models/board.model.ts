@@ -31,6 +31,20 @@ const createNewBoard = async (data: any) => {
   }
 }
 
+const updateBoard = async (id: string, data: any) => {
+  try {
+    const dataToUpdate = { ...data };
+    const result = await getDBInstance().collection(boardCollectionName).findOneAndUpdate(
+      { _id: new ObjectId(id) },
+      { $set: dataToUpdate },
+      { returnDocument: "after" }
+    );
+    return result.value;
+  } catch (error) {
+    throw new Error(error);
+  }
+}
+
 // {
 //   $addFields: {
 //     _id: { $toString: '$_id' } // convert _id to string for querrying
@@ -82,4 +96,4 @@ const pushColumnOrder = async (boardId: string, columnId: string) => {
   }
 }
 
-export const BoardModel = { createNewBoard, getBoard, pushColumnOrder };
+export const BoardModel = { createNewBoard, getBoard, pushColumnOrder, updateBoard };
